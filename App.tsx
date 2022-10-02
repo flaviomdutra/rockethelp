@@ -4,7 +4,7 @@ import { NativeBaseProvider, StatusBar } from 'native-base';
 import { THEME } from './src/styles/theme';
 
 import { Loading } from './src/components/Loading';
-import { Details } from './src/screens/Details';
+import { Routes } from './src/routes';
 
 export default function App() {
   const [fontsLoaded] = useFonts({ Roboto_400Regular, Roboto_700Bold });
@@ -16,7 +16,7 @@ export default function App() {
         backgroundColor="transparent"
         translucent
       />
-      {fontsLoaded ? <Details /> : <Loading />}
+      {fontsLoaded ? <Routes /> : <Loading />}
     </NativeBaseProvider>
   );
 }

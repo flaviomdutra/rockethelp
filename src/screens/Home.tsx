@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import { Center, FlatList, Heading, HStack, IconButton, Text, useTheme, VStack } from "native-base";
 import { ChatTeardropText, SignOut } from "phosphor-react-native";
 import { useState } from "react";
@@ -9,10 +10,25 @@ import { Order, OrderProps } from "../components/Order";
 
 export function Home() {
     const [statusSelected, setStatusSelected] = useState<'open' | 'closed'>('open');
-    const [orders, setOrders] = useState<OrderProps[]>([]);
+    const [orders, setOrders] = useState<OrderProps[]>([
+        {
+            id: "1",
+            patrimony: "123456",
+            when: "2021-05-20T18:00:00.000Z",
+            status: "open",
+        }
+    ]);
 
-
+    const navigation = useNavigation();
     const { colors } = useTheme();
+
+    function handleNewOrder() {
+        navigation.navigate('new');
+    }
+
+    function handleOpenDetails(orderId: string) {
+        navigation.navigate('details', { orderId });
+    }
 
     return (
         <VStack flex={1} pb={6} bg="gray.700">
@@ -34,11 +50,11 @@ export function Home() {
             <VStack flex={1} px={6} >
                 <HStack w="full" mt={8} mb={4} justifyContent="space-between" alignItems="center">
                     <Heading color="gray.100">
-                        Meus chamados
+                        Solicitações
                     </Heading>
 
                     <Text color="gray.200">
-                        3
+                        {orders.length}
                     </Text>
                 </HStack>
 
@@ -60,7 +76,7 @@ export function Home() {
                 <FlatList
                     data={orders}
                     keyExtractor={item => item.id}
-                    renderItem={({ item }) => <Order data={item} />}
+                    renderItem={({ item }) => <Order data={item} onPress={() => handleOpenDetails(item.id)} />}
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ paddingBottom: 100 }}
                     ListEmptyComponent={() => (
@@ -74,7 +90,7 @@ export function Home() {
                     )}
                 />
 
-                <Button title="Nova solicitação" />
+                <Button title="Nova solicitação" onPress={handleNewOrder} />
             </VStack>
 
         </VStack>
